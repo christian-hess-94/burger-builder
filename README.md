@@ -1,3 +1,6 @@
+`Pt-Br: Projeto criado durante o curso online "React - The Complete Guide (incl Hooks, React Router, Redux)".`
+`Eng: Project created during the "React - The Complete Guide (incl Hooks, React Router, Redux)" online course.`
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

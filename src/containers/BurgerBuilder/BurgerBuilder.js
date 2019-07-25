@@ -62,11 +62,11 @@ export default class BurgerBuilder extends Component {
         const disabledInfo = {
             ...this.state.ingredients
         }
-        let disabledButton = true;
+        let not_purchaseable = false;
 
         for (let key in disabledInfo) {
             if (disabledInfo[key] > 0) {
-                disabledButton = false
+                not_purchaseable = true
             }
             disabledInfo[key] = disabledInfo[key] <= 0 //Seta se o valor é menor ou igual a 0 e retorna o booleano
         }
@@ -78,7 +78,7 @@ export default class BurgerBuilder extends Component {
                     lessIngredient={this.lessIngredientHandler}
                     disabled={disabledInfo}
                     price={this.state.totalPrice}
-                    disabledButton={disabledButton} />
+                    purchaseable={not_purchaseable} />
             </Auxiliary>
         )
     }

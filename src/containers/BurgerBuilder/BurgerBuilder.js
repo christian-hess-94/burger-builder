@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import Auxiliary from '../../hoc/Auxiliary';
-import Burger from '../../components/Burger/Burger';
+
+import Auxiliary from '../../hoc/Auxiliary/Auxiliary';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
+import Burger from '../../components/Burger/Burger';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 
@@ -62,7 +63,7 @@ export default class BurgerBuilder extends Component {
     }
 
     purchaseHandler = () => {
-        console.log('purchasing')
+        console.log('Clicked Order now')
         this.setState({ purchasing: true })
     }
 

@@ -1,7 +1,8 @@
-import React from 'react';
-import BuildControl from './BuildControl/BuildControl';
-import classes from './BuildControls.module.css'
 import * as BurgerIngredientTypes from './../BurgerIngredient/BurgerIngredientTypes'
+
+import BuildControl from './BuildControl/BuildControl';
+import React from 'react';
+import classes from './BuildControls.module.css'
 
 const controls = [
     { type: BurgerIngredientTypes.Salad },
@@ -10,7 +11,6 @@ const controls = [
     { type: BurgerIngredientTypes.Bacon },
 ]
 const BuildControls = (props) => {
-    console.log(props.ingredientPrices)
     return (
         <div className={classes.BuildControls}>
 

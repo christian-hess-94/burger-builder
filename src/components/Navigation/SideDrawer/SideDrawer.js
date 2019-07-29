@@ -1,10 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import Auxiliary from '../../../hoc/Auxiliary/Auxiliary';
+import Backdrop from './../../UI/Backdrop/Backdrop'
 import Logo from '../../Logo/Logo';
 import NavigationItems from '../NavigationItems/NavigationItems';
-import Backdrop from './../../UI/Backdrop/Backdrop'
+import React from 'react';
 import classes from './SideDrawer.module.css'
-import Auxiliary from '../../../hoc/Auxiliary';
 
 const SideDrawer = props => {
 
@@ -31,8 +30,5 @@ const SideDrawer = props => {
     );
 };
 
-SideDrawer.propTypes = {
-
-};
 
 export default SideDrawer;

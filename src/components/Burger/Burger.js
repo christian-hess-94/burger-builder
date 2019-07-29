@@ -1,6 +1,7 @@
-import React from 'react';
-import BurgerIngredient from './BurgerIngredient/BurgerIngredient';
 import * as BurgerIngredientTypes from './BurgerIngredient/BurgerIngredientTypes';
+
+import BurgerIngredient from './BurgerIngredient/BurgerIngredient';
+import React from 'react';
 import classes from './Burger.module.css'
 
 const Burger = (props) => {
@@ -16,8 +17,6 @@ const Burger = (props) => {
     }).reduce((arr, el) => {//Verificando se não há nenhum ingrediente
         return arr.concat(el)
     }, [])
-
-    console.log(transformedIngredients.length)
 
     return (
         < div className={classes.Burger} >

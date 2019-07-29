@@ -1,23 +1,42 @@
-import React from 'react';
-import classes from './Modal.module.css'
+import React, { Component } from 'react'
+
+import Auxiliary from '../../../hoc/Auxiliary/Auxiliary';
 import Backdrop from '../Backdrop/Backdrop';
-import Auxiliary from '../../../hoc/Auxiliary';
 import Button from './../Button/Button'
+import classes from './Modal.module.css'
 
-const Modal = (props) => (
-    <Auxiliary>
-        <Backdrop show={props.show} clicked={props.noClick} />
-        <div
-            className={classes.Modal}
-            style={{
-                transform: props.show ? 'translateY(0)' : 'translateY(-100vh)',
-                opacity: props.show ? '1' : '0'
-            }}>
-            {props.children}
-            <Button clicked={props.yesClick} buttonType="Success">{props.yesText}</Button>
-            <Button clicked={props.noClick} buttonType="Danger">{props.noText}</Button>
-        </div>
-    </Auxiliary>
-);
+export default class Modal extends Component {
 
-export default Modal;
+    shouldComponentUpdate(nextProps, nextState) {
+
+        return nextProps.show !== this.props.show
+        /* if (nextProps.show !== this.props.show) {
+            return true
+        } else {
+            return false
+        } */
+
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        console.log('[Modal] DidUpdate')
+    }
+
+    render() {
+        return (
+            <Auxiliary>
+                <Backdrop show={this.props.show} clicked={this.props.noClick} />
+                <div
+                    className={classes.Modal}
+                    style={{
+                        transform: this.props.show ? 'translateY(0)' : 'translateY(-100vh)',
+                        opacity: this.props.show ? '1' : '0'
+                    }}>
+                    {this.props.children}
+                    <Button clicked={this.props.yesClick} buttonType="Success">{this.props.yesText}</Button>
+                    <Button clicked={this.props.noClick} buttonType="Danger">{this.props.noText}</Button>
+                </div>
+            </Auxiliary>
+        )
+    }
+}

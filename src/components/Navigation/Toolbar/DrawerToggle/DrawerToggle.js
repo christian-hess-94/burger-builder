@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classes from './DrawerToggle.module.css';
 
 const DrawerToggle = props => {
@@ -10,10 +9,6 @@ const DrawerToggle = props => {
             <div />
         </div>
     );
-};
-
-DrawerToggle.propTypes = {
-
 };
 
 export default DrawerToggle;

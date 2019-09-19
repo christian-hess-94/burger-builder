@@ -5,6 +5,9 @@ import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Burger from '../../components/Burger/Burger';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
+import Spinner from '../../components/UI/Spinner/Spinner';
+import { ordersInstance } from './../../axios/instances'
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 
 const INGREDIENT_PRICES = {
     Salad: 2.50,
@@ -13,21 +16,33 @@ const INGREDIENT_PRICES = {
     Bacon: 2.50
 }
 
-export default class BurgerBuilder extends Component {
+class BurgerBuilder extends Component {
 
     state = {
-        ingredients: {
-            Salad: 0,
-            Bacon: 0,
-            Cheese: 0,
-            Meat: 0
-        },
+        ingredients: null,
         totalPrice: 8,
-        purchasing: false
+        purchasing: false,
+        loading: false,
+        error: false
     }
 
-    moreIngredientHandler = (type) => {
-        console.log("Adding ", type)
+
+    componentDidMount() {
+        ordersInstance.get('/ingredients.json')
+            .then(response => {
+                console.log("%c Starting ingredients ", 'color: lime;font-weight: bold; font-size: 20px ', response.data);
+                this.setState({ ingredients: response.data })
+            }).catch(error => {
+                this.setState({ error: true })
+            }).finally(data => {
+
+            })
+
+
+    }
+
+    moreIngredientsHandler = (type) => {
+        console.log('Adding ', type)
         const oldCount = this.state.ingredients[type]
         const newCount = oldCount + 1;
         const updatedIngredients = {
@@ -69,8 +84,31 @@ export default class BurgerBuilder extends Component {
 
     yesPurchase = () => {
         console.warn('%c Clicked yes for purchasing', 'color: green; font-weight: bold')
+        this.setState({ loading: true })
+        ordersInstance.post('/orders.json',
+            {
+                ingredients: this.state.ingredients,
+                totalPrice: this.state.totalPrice,
+                customer: {
+                    name: 'Christian Hess',
+                    address: {
+                        street: 'Rua Teste',
+                        zipCode: '12345-678',
+                        country: 'Brazil'
+                    },
+                    email: 'test@test.com'
+                },
+                deliveryMethod: 'fastest'
+            })
+            .then(result => {
 
-        this.setState({ purchasing: false })
+            })
+            .catch(error => {
+
+            })
+            .finally(x => {
+                this.setState({ purchasing: false, loading: false })
+            })
     }
 
     noPurchase = () => {
@@ -91,26 +129,47 @@ export default class BurgerBuilder extends Component {
             }
             disabledInfo[key] = disabledInfo[key] <= 0 //Seta se o valor é menor ou igual a 0 e retorna o booleano
         }
+
+        let orderSummary = null
+        let burger = this.state.error ? <p>Ingredients can't be loaded!</p> : <Spinner />
+        let buildControls = this.state.error ? null : <Spinner />
+
+        if (this.state.ingredients) {
+
+            burger = <Burger ingredients={this.state.ingredients} />
+
+            buildControls = <BuildControls
+                ingredientPrices={INGREDIENT_PRICES}
+                moreIngredient={this.moreIngredientsHandler}
+                lessIngredient={this.lessIngredientHandler}
+                disabled={disabledInfo}
+                price={this.state.totalPrice}
+                ordered={this.purchaseHandler}
+                purchaseable={not_purchaseable} />
+
+            orderSummary = <OrderSummary
+                totalPrice={this.state.totalPrice}
+                ingredients={this.state.ingredients} />
+        }
+
+        if (this.state.loading) {
+            orderSummary = <Spinner />
+        }
+
         return (
             <Auxiliary>
                 <Modal
                     show={this.state.purchasing}
                     yesClick={this.yesPurchase}
                     noClick={this.noPurchase}
-                    yesText="Yes"
-                    noText="Close">
-                    <OrderSummary totalPrice={this.state.totalPrice} ingredients={this.state.ingredients} />
+                    yesText='Yes'
+                    noText='Close'>
+                    {orderSummary}
                 </Modal>
-                <Burger ingredients={this.state.ingredients} />
-                <BuildControls
-                    ingredientPrices={INGREDIENT_PRICES}
-                    moreIngredient={this.moreIngredientHandler}
-                    lessIngredient={this.lessIngredientHandler}
-                    disabled={disabledInfo}
-                    price={this.state.totalPrice}
-                    ordered={this.purchaseHandler}
-                    purchaseable={not_purchaseable} />
+                {burger}
+                {buildControls}
             </Auxiliary>
         )
     }
 }
+export default withErrorHandler(BurgerBuilder, ordersInstance)

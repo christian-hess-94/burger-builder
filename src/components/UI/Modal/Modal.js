@@ -9,7 +9,7 @@ export default class Modal extends Component {
 
     shouldComponentUpdate(nextProps, nextState) {
 
-        return nextProps.show !== this.props.show
+        return nextProps.show !== this.props.show || nextProps.children !== this.props.children
         /* if (nextProps.show !== this.props.show) {
             return true
         } else {
@@ -33,6 +33,7 @@ export default class Modal extends Component {
                         opacity: this.props.show ? '1' : '0'
                     }}>
                     {this.props.children}
+                    <br />
                     <Button clicked={this.props.yesClick} buttonType="Success">{this.props.yesText}</Button>
                     <Button clicked={this.props.noClick} buttonType="Danger">{this.props.noText}</Button>
                 </div>
